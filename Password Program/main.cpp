@@ -5,11 +5,12 @@ using namespace std;
 class User
 {
 private:
-	string name; 
+	string username, password; 
 public: 
-	User(string user_name)
+	User(string user_name, string use_password)
 	{
-		name = user_name;
+		username = user_name;
+		password = use_password;
 	}
 
 	~User()
@@ -17,22 +18,42 @@ public:
 
 	void Set_Name(User user, string new_name)
 	{
-		user.name = new_name; 
+		user.username = new_name; 
 	}
 
-	string Get_name()
+	// REturns user's username
+	string getUsername()
 	{
-		return name; 
+		return username; 
+	}
+
+	// Returns user's password
+	string getPassword()
+	{
+		return password; 
 	}
 	
 };
 
+User createUser()
+{
+	string name, password;
+
+	cout << "Username: ";
+	cin >> name;
+	cout << "Password: ";
+	cin >> password; 
+
+	User* user = new User(name, password);
+
+	return *user;
+}
+
 int main() 
 {
-	string input; 
-	cout << "WHat is your name?"; 
-	cin >> input; 
-	User *user1 = new User("Simjae");
-	cout << user1->Get_name();
+	User user1 = createUser();
+	cout << user1.getUsername();
+	cout << user1.getPassword();
+
 	return 0; 
 }
