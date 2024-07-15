@@ -44,6 +44,8 @@ public:
 	
 };
 
+
+
 // Sets the user's name and password
 User createUser(int accountNumber)
 {
@@ -72,7 +74,15 @@ void createFile(User user)
 
 int main() 
 {
-	int numberOfAccounts = 0; 
+	int numberOfAccounts = 0;
+	bool proceed = false;
+
+
+	if (proceed == false)
+	{
+
+	}
+
 	numberOfAccounts += 1; 
 	User user1 = createUser(numberOfAccounts);
 	createFile(user1);
