@@ -74,13 +74,14 @@ void createFile(User user)
 
 int main() 
 {
-	int numberOfAccounts = 0;
+	int numberOfAccounts = 0, choice = 0;
 	bool proceed = false;
 
 
 	if (proceed == false)
 	{
-
+		cout << "What would you like to do?";
+		cin >> choice; 
 	}
 
 	numberOfAccounts += 1; 
