@@ -101,12 +101,12 @@ int main()
 		cout << "\n2. Sign in"; 
 		cin >> choice; 
 		
-			// Determines what to do depending on what the user input 
+		// Determines what to do depending on what the user input 
 		switch (choice)
 		{
 		case 1:
 			numberOfAccounts += 1;
-			user = createUser(numberOfAccounts);
+		    user = createUser(numberOfAccounts);
 			createFile(user);
 			break;
 
@@ -123,28 +123,25 @@ int main()
 			cout << "\nn\n";
 			cin >> answer;
 
-			if (answer == 'y')
+			switch (answer)
 			{
+			case 'y':
 				proceed = true; 
 				valid = true; 
 				break; 
-			}
-			else if (asnwer == 'n')
-			{
+		
+			case 'n':
 				proceed = false;
 				valid = true; 
 				break; 
-			}
 
-			else
-			{
+			default: 
 				cout << "Please enter a valid response.";
 				valid = false; 
 				break;
 			}
-		}
 
-		
+		}
 		
 	}
 
