@@ -85,6 +85,9 @@ User createUser(int accountNumber)
 	return *user;
 }
 
+
+
+
 // Creates a file name "Users" if one doesn't already exist and adds users to it
 void createFile(node *currentUser)
 {
@@ -109,36 +112,42 @@ bool infoCheck(node *traverse, string un_input, string p_input)
 {	
 	bool found = false, correct = true; 
 	const int len = p_input.length() + 1;
-	const int len2 = traverse->user.getPassword().length() + 1;
 	char* input_pass = new char [len];
-	char* stored_pass = new char[len2]; 
 	strcpy(input_pass, p_input.c_str());
-	strcpy(stored_pass, traverse->user.getPassword().c_str());
 
-	while (traverse != NULL || found == true)
+	while (traverse != nullptr && found == false)
 	{
-		if (un_input.compare(traverse->user.getUsername()))
+		if (un_input.compare(traverse->user.getUsername()) == 0)
 		{
-			found = true; 
-			for (int i = 0; i < len; i++)
-			{
-				if (input_pass[i] == stored_pass[i])
-				{
-					continue; 
-				}
-				else
-				{
-					correct = false;
-					break; 
-				}
-			}
+			found = true;
+		}
+		else
+		{
+			traverse = traverse->next; 
 		}
 		
 	}
 
-	delete input_pass;
-	delete stored_pass; 
+	const int len2 = traverse->user.getPassword().length() + 1;
+	char* stored_pass = new char[len2];
+	strcpy(stored_pass, traverse->user.getPassword().c_str());
 
+	for (int i = 0; i < len - 1; i++)
+	{
+		if (input_pass[i] == stored_pass[i])
+		{
+			continue;
+		}
+		else
+		{
+			correct = false;
+			break;
+		}
+	}
+	
+	delete[] input_pass; 
+	delete[] stored_pass;
+	
 
 	return correct; 
 }
@@ -265,4 +274,5 @@ int main()
 * THINGS STILL NEEDED:
 * Need to check if there is someone with that username already 
 * Need to make sure there are no special characters in the username
+* When checking password need to make sure that if the 1st password is shorter but containsthe correct characters it doesn't return "correct = true"
 */
