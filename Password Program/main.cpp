@@ -89,11 +89,11 @@ User createUser(int accountNumber)
 void createFile(node *currentUser)
 {
 	fstream myFile;
+	myFile.open("Users", ios::app);
 	myFile << numberOfAccounts;
 
 	while (currentUser->next != NULL)
 	{
-		myFile.open("Users", ios::app);
 		myFile <<  currentUser->user.getUsername();
 		myFile << "\n";
 		myFile << currentUser->user.getPassword();
@@ -104,16 +104,45 @@ void createFile(node *currentUser)
 	myFile.close();
 }
 
-bool infoCheck()
-{
-	return true; 
+// Checks if the username and password are correct, un: username, p: password 
+bool infoCheck(node *traverse, string un_input, string p_input)
+{	
+	bool found = false, correct = true; 
+	const int len = p_input.length() + 1;
+	const int len2 = traverse->user.getPassword().length() + 1;
+	char* input_pass = new char [len];
+	char* stored_pass = new char[len2]; 
+	strcpy(input_pass, p_input.c_str());
+	strcpy(stored_pass, traverse->user.getPassword().c_str());
+
+	while (traverse != NULL || found == true)
+	{
+		if (un_input.compare(traverse->user.getUsername()))
+		{
+			found = true; 
+			for (int i = 0; i < len; i++)
+			{
+				if (input_pass[i] == stored_pass[i])
+				{
+					continue; 
+				}
+				else
+				{
+					correct = false;
+					break; 
+				}
+			}
+		}
+		
+	}
+
+	delete input_pass;
+	delete stored_pass; 
+
+
+	return correct; 
 }
 
-// Checks if the username and password are correct
-bool checkPassword() 
-{
-	return true;
-}
 
 void addUserToList(node *&head)
 {
@@ -167,6 +196,7 @@ int main()
 	node *head = NULL; 
 	bool proceed = true, valid = false;
 	char answer = ' ';
+	string i_username = "", i_password = ""; 
 
 	while (proceed == true)
 	{
@@ -184,7 +214,11 @@ int main()
 			break;
 
 		case 2:
-			infoCheck();
+			cout << "Enter Username: ";
+			cin >> i_username;
+			cout << "Enter Password: ";
+			cin >> i_password; 
+			infoCheck(head, i_username, i_password);
 			break; 
 		}
 		valid = false; 
@@ -222,9 +256,13 @@ int main()
 	}
 
 	cout << "Thank you for your transaction!"; 
-	createFile();
+	//createFile();
 	
 	return 0; 
 }
 
-// Need to make sure there are no special characters in the username 
+/*
+* THINGS STILL NEEDED:
+* Need to check if there is someone with that username already 
+* Need to make sure there are no special characters in the username
+*/
