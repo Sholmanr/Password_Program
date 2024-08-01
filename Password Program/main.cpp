@@ -93,14 +93,11 @@ User createUser(int accountNumber, string username, string password, node *&head
 	return *user;
 }
 
-
-
-
 // Creates a file name "Users" if one doesn't already exist and adds users to it
 void createFile(node *currentUser)
 {
-	fstream myFile;
-	myFile.open("Users", ios::app);
+	ofstream myFile;
+	myFile.open("Users", ios::trunc);
 	myFile << numberOfAccounts;
 
 	while (currentUser->next != NULL)
@@ -111,11 +108,11 @@ void createFile(node *currentUser)
 		myFile << currentUser->user.getPassword();
 		myFile << "\n"; 
 		myFile << currentUser->user.getAccountNumber();
-		myFile << "\n";
 
 		currentUser = currentUser->next; 
 	}
 
+	myFile << "\n";
 	myFile << currentUser->user.getUsername();
 	myFile << "\n";
 	myFile << currentUser->user.getPassword();
