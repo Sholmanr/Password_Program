@@ -70,11 +70,26 @@ public:
 
 };
 
+void addUserToList(node *&head, User user)
+{
+	node* n = new node(user);
+	if (head == NULL)
+	{
+		head = n;
+	}
+	else
+	{
+		n->next = head;
+		head = n;
+
+	}
+}
+
 // Sets the user's name and password
-User createUser(int accountNumber, string username, string password)
+User createUser(int accountNumber, string username, string password, node *&head)
 {
 	User* user = new User(username, password, accountNumber);
-	
+	addUserToList(head, *user);
 	return *user;
 }
 
@@ -157,22 +172,7 @@ bool infoCheck(node *traverse, string un_input, string p_input)
 }
 
 
-void addUserToList(node *&head)
-{
-	User user;
 
-	node *n = new node(user);
-	if (head == NULL)
-	{
-		head = n; 
-	}
-	else
-	{
-		n->next = head;
-		head = n; 
-		
-	}
-}
 
 void getUsers()
 {
@@ -199,7 +199,7 @@ void getUsers()
 
 }
 
-void readFile()
+void readFile(struct node *&head)
 {
 	string username, password;
 	int accountNumber;
@@ -217,7 +217,7 @@ void readFile()
 			getline(usersFile, password);
 			usersFile >> accountNumber;
 			usersFile.ignore();
-			createUser(accountNumber, username, password);
+			createUser(accountNumber, username, password, head);
 
 		}
 	}
@@ -231,7 +231,7 @@ int main()
 	string answer = " ";
 	string i_username = "", i_password = ""; 
 
-	readFile();
+	readFile(head);
 
 	while (proceed == true)
 	{
@@ -253,7 +253,7 @@ int main()
 			cin >> i_username;
 			cout << "Enter Password: ";
 			cin >> i_password;
-			createUser(numberOfAccounts, i_username, i_password);
+			createUser(numberOfAccounts, i_username, i_password, head);
 			valid = false;
 			break;
 
