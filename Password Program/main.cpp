@@ -71,17 +71,10 @@ public:
 };
 
 // Sets the user's name and password
-User createUser(int accountNumber)
+User createUser(int accountNumber, string username, string password)
 {
-	string name, password;
-
-	cout << "Username: ";
-	cin >> name;
-	cout << "Password: ";
-	cin >> password; 
-
-	User* user = new User(name, password, accountNumber);
-
+	User* user = new User(username, password, accountNumber);
+	
 	return *user;
 }
 
@@ -97,13 +90,24 @@ void createFile(node *currentUser)
 
 	while (currentUser->next != NULL)
 	{
+		myFile << "\n";
 		myFile <<  currentUser->user.getUsername();
 		myFile << "\n";
 		myFile << currentUser->user.getPassword();
 		myFile << "\n"; 
 		myFile << currentUser->user.getAccountNumber();
 		myFile << "\n";
+
+		currentUser = currentUser->next; 
 	}
+
+	myFile << currentUser->user.getUsername();
+	myFile << "\n";
+	myFile << currentUser->user.getPassword();
+	myFile << "\n";
+	myFile << currentUser->user.getAccountNumber();
+	myFile << "\n";
+
 	myFile.close();
 }
 
@@ -156,9 +160,6 @@ bool infoCheck(node *traverse, string un_input, string p_input)
 void addUserToList(node *&head)
 {
 	User user;
-	numberOfAccounts += 1;
-
-	user = createUser(numberOfAccounts);
 
 	node *n = new node(user);
 	if (head == NULL)
@@ -198,28 +199,62 @@ void getUsers()
 
 }
 
+void readFile()
+{
+	string username, password;
+	int accountNumber;
+	ifstream usersFile;
+
+	usersFile.open("Users", ios::out);
+
+	if (usersFile.is_open())
+	{
+		usersFile >> numberOfAccounts;
+		usersFile.ignore();
+		for (int i = 0; i < numberOfAccounts; i++)
+		{
+			getline(usersFile, username);
+			getline(usersFile, password);
+			usersFile >> accountNumber;
+			usersFile.ignore();
+			createUser(accountNumber, username, password);
+
+		}
+	}
+}
 
 int main() 
 {
 	int choice = 0;
 	node *head = NULL; 
 	bool proceed = true, valid = false;
-	char answer = ' ';
+	string answer = " ";
 	string i_username = "", i_password = ""; 
+
+	readFile();
 
 	while (proceed == true)
 	{
+		
 		// Displays the choices and gets the choice from the user
 		cout << "What would you like to do?";
 		cout << "\n1. Create a new account";
 		cout << "\n2. Sign in\n"; 
 		cin >> choice; 
 		
-			// Determines what to do depending on what the user input 
+		
+		
+		// Determines what to do depending on what the user input 
 		switch (choice)
 		{
-		case 1:
-			addUserToList(head);
+		case 1: 
+			numberOfAccounts += 1; 
+			cout << "Enter Username: ";
+			cin >> i_username;
+			cout << "Enter Password: ";
+			cin >> i_password;
+			createUser(numberOfAccounts, i_username, i_password);
+			valid = false;
 			break;
 
 		case 2:
@@ -228,9 +263,16 @@ int main()
 			cout << "Enter Password: ";
 			cin >> i_password; 
 			infoCheck(head, i_username, i_password);
+			valid = false;
 			break; 
+		
+		default:
+			cout << "Please enter a valid response.\n";
+			valid = true;
+			cin.clear();
+			cin.ignore(100000, '\n');
 		}
-		valid = false; 
+
 		// Determines what the user wants to do after a transaction and makes sure the input is valid 
 		while (valid == false)
 		{
@@ -239,13 +281,13 @@ int main()
 			cout << "\nn\n";
 			cin >> answer;
 
-			if (answer == 'y')
+			if (answer.compare("y") == 0)
 			{
 				proceed = true; 
 				valid = true; 
 				break; 
 			}
-			else if (answer == 'n')
+			else if (answer.compare("n") == 0)
 			{
 				proceed = false;
 				valid = true; 
@@ -254,9 +296,7 @@ int main()
 
 			else
 			{
-				cout << "Please enter a valid response.";
-				valid = false; 
-				break;
+				cout << "Please enter a valid response.\n";
 			}
 		}
 
@@ -265,7 +305,7 @@ int main()
 	}
 
 	cout << "Thank you for your transaction!"; 
-	//createFile();
+	createFile(head);
 	
 	return 0; 
 }
@@ -275,4 +315,6 @@ int main()
 * Need to check if there is someone with that username already 
 * Need to make sure there are no special characters in the username
 * When checking password need to make sure that if the 1st password is shorter but containsthe correct characters it doesn't return "correct = true"
+* Bugs:
+* - If you input two things when determining what to do it will just skip the input of the username 
 */
