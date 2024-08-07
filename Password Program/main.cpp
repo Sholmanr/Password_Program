@@ -1,11 +1,14 @@
+//#include "MergeSort.h"
+#include "User.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 using namespace std; 
 
+
 int numberOfAccounts = 0;
 
-class User
+/*class User
 {
 private:
 	string username, password;
@@ -37,7 +40,7 @@ public:
 		user.username = new_name; 
 	}
 
-	// REturns user's username
+	// Returns user's username
 	string getUsername()
 	{
 		return username; 
@@ -56,11 +59,12 @@ public:
 	
 };
 
+
 class node
 {
 public:
 	User user;
-	node* next; 
+	node* next;
 
 	node(User currentUser)
 	{
@@ -69,10 +73,13 @@ public:
 	}
 
 };
+*/
 
-void addUserToList(node *&head, User user)
+void addUserToList(node* head, User user)
 {
+	node* traverse = head;
 	node* n = new node(user);
+
 	if (head == NULL)
 	{
 		head = n;
@@ -81,8 +88,9 @@ void addUserToList(node *&head, User user)
 	{
 		n->next = head;
 		head = n;
-
 	}
+//FIXME mergeSort(head); 
+
 }
 
 // Sets the user's name and password
@@ -196,7 +204,7 @@ void getUsers()
 
 }
 
-void readFile(struct node *&head)
+void readFile(node *&head)
 {
 	string username, password;
 	int accountNumber;
@@ -312,6 +320,8 @@ int main()
 * Need to check if there is someone with that username already 
 * Need to make sure there are no special characters in the username
 * When checking password need to make sure that if the 1st password is shorter but containsthe correct characters it doesn't return "correct = true"
+* Merge sort header broken
 * Bugs:
 * - If you input two things when determining what to do it will just skip the input of the username 
+* 
 */
